@@ -1,81 +1,214 @@
-let planets = []
-let sun
-let numPlanets = 3
-let G = 120
+class tatasurya {
+  constructor(luas, jarak, sudut, cepat){
+    this.luas = luas;
+    this.jarak = jarak;
+    this.sudut = sudut;
+    this.cepat = cepat;
+  }
+}
 
+let v = 3;
+let rotasibulan = 1;
+const sun = new tatasurya(25,0,0,0);
+const mercury = new tatasurya(10,30,1,1*v)
+const venus = new tatasurya(16,50,1,1/2*v)
+const earth = new tatasurya(17,75,1,1/3*v);
+const mars = new tatasurya(13,90,1,1/4*v)
+const jupiter = new tatasurya(26,125,1,1/5*v)
+const saturn = new tatasurya(23,160,1,1/6*v)
+const uranus = new tatasurya(21,180,1,1/7*v)
+const neptune = new tatasurya(19,200,1,1/8*v)
 
 function setup() {
-  createCanvas(windowWidth,windowHeight)
-  sun = new Body (50,createVector(0,0),createVector(0,0))
-
-    // Initialise the planets
-  for (let i = 0; i < numPlanets; i++) {
-    let mass = 15
-    let radius = random(sun.d, min(windowWidth/2,windowHeight/2))
-    let angle = (0, TWO_PI)
-    let planetPos = createVector(radius * cos(angle), radius * sin(angle))
-
-    // Find direction of orbit and set velocity
-    let planetVel = planetPos.copy()
-    if ((1) < 0.1) planetVel.rotate(-HALF_PI)
-    else planetVel.rotate(HALF_PI)  // Direction of orbit
-    planetVel.normalize()
-    planetVel.mult( sqrt((G * sun.mass)/(radius)) ) // Circular orbit velocity
-
-
-    planets.push( new Body(mass, planetPos, planetVel) )
-  }
+  createCanvas(700, 700);
+  angleMode(DEGREES);
 }
 
 function draw() {
-  background(180)
-  translate(width/2, height/2)
-  for (let i = numPlanets-1; i >= 0; i--) {
-    sun.attract(planets[i])
-    planets[i].move()
-    planets[i].show()
-  }
-  sun.show()
+  background(51);
+  translate(width/2,height/2);
+  
+  sunShow();
+  mercuryShow();
+  venusShow();
+  earthShow();
+  marsShow();
+  jupiterShow();
+  saturnShow();
+  uranusShow();
+  neptuneShow();
+}
+
+//Matahari
+function sunShow(){
+  noStroke();
+  fill('#FF880D');
+  circle(sun.jarak,sun.jarak,sun.luas);
 }
 
 
-function Body(_mass, _pos, _vel){
-  this.mass = _mass
-  this.pos = _pos
-  this.vel = _vel
-  this.d = this.mass*2
-  this.thetaInit = 0
-  this.path = []
-  this.pathLen = Infinity;
+//Merkurius
+function mercuryShow(){
+  push();
+  
+  //orbit
+  strokeWeight(1);
+  stroke('white');
+  noFill();
+  circle(0,0,85);
+  rotate(mercury.sudut);
+  noStroke();
+  fill('#696969');
+  circle(mercury.jarak,mercury.jarak,mercury.luas);
+  pop();
+  mercury.sudut += mercury.cepat;
+}
 
-  this.show = function() {
-    stroke(0,50)
-    for (let i = 0; i < this.path.length-2; i++) {
-      line(this.path[i].x, this.path[i].y, this.path[i+1].x, this.path[i+1].y,)
-    }
-    fill('#ff8533'); 
-    noStroke()
-    ellipse(this.pos.x, this.pos.y, this.d, this.d)
-  }
+//Venus
+function venusShow(){
+  push();
+  
+  //orbit
+  strokeWeight(1);
+  stroke('white');
+  noFill();
+  circle(0,0,142);
+  rotate(venus.sudut);
+  noStroke();
+  fill('#937D64');
+  circle(venus.jarak,venus.jarak,venus.luas);
+  pop();  
+  venus.sudut += venus.cepat;
+}
+
+//Bumi
+function earthShow(){
+  push();
+  
+  //orbit
+  strokeWeight(1);
+  stroke('white');
+  noFill();
+  circle(0,0,212);
+  
+  rotate(earth.sudut);
+  noStroke();
+  fill('#87CEEB');
+  circle(earth.jarak,earth.jarak,earth.luas);
+  earth.sudut += earth.cepat;
+  
+  //Bulan
+  fill('white');
+  translate(earth.jarak,earth.jarak);
+  rotate(rotasibulan);
+  circle(10,10,5);
+  pop()
+  rotasibulan += 1
+}
 
 
-  this.move = function() {
-    this.pos.x += this.vel.x
-    this.pos.y += this.vel.y
-    this.path.push(createVector(this.pos.x,this.pos.y))
-    if (this.path.length > 200) this.path.splice(0,1)
-  }
+//Mars
+function marsShow(){
+  push();
+  
+  //orbit
+  strokeWeight(1);
+  stroke('white');
+  noFill();
+  circle(0,0,254);
+  
+  //sabuk orbit
+  strokeWeight(10);
+  stroke('grey');
+  noFill();
+  circle(0,0,300);
 
-  this.applyForce = function(f) {
-    this.vel.x += f.x / this.mass
-    this.vel.y += f.y / this.mass
-  }
+  //planet
+  rotate(mars.sudut);
+  noStroke();
+  fill('#FF0000');
+  circle(mars.jarak,mars.jarak,mars.luas);
+  pop();
+  mars.sudut += mars.cepat;
+}
 
-  this.attract = function(child) {
-    let r = dist(this.pos.x, this.pos.y, child.pos.x, child.pos.y)
-    let f = (this.pos.copy()).sub(child.pos)
-    f.setMag( (G * this.mass * child.mass)/(r * r) )
-    child.applyForce(f)
-  }
+//Jupiter
+function jupiterShow(){
+  push();
+  
+  //orbit
+  strokeWeight(1);
+  stroke('white');
+  noFill();
+  circle(0,0,355);
 
+  //planet
+  rotate(jupiter.sudut);
+  noStroke();
+  fill('#EE3F08');
+  circle(jupiter.jarak,jupiter.jarak,jupiter.luas);
+  pop();
+  jupiter.sudut += jupiter.cepat;
+}
+
+//Saturnus
+function saturnShow(){
+  push();
+  
+  //orbit
+  strokeWeight(1);
+  stroke('white');
+  noFill();
+  circle(0,0,452);
+
+  //planet
+  rotate(saturn.sudut);
+  noStroke();
+  fill('#DE0BE6');
+  circle(saturn.jarak,saturn.jarak,saturn.luas);
+  
+  //cincin
+  noFill();
+  stroke('#2196F3');
+  ellipse(saturn.jarak,saturn.jarak,50,20);
+  pop();
+  saturn.sudut += saturn.cepat;
+}
+
+//Uranus
+function uranusShow(){
+  push();
+  
+  //orbit
+  strokeWeight(1);
+  stroke('white');
+  noFill();
+  circle(0,0,510);
+
+  //planet
+  rotate(uranus.sudut);
+  noStroke();
+  fill('#607D8B');
+  circle(uranus.jarak,uranus.jarak,uranus.luas);
+  pop();
+  uranus.sudut += uranus.cepat;
+}
+
+//Neptunus
+function neptuneShow(){
+  push();
+  
+  //orbit
+  strokeWeight(1);
+  stroke('white');
+  noFill();
+  circle(0,0,565);
+
+  //planet
+  rotate(neptune.sudut);
+  noStroke();
+  fill('#0043FF');
+  circle(neptune.jarak,neptune.jarak,neptune.luas);
+  pop();
+  neptune.sudut += neptune.cepat;
 }
